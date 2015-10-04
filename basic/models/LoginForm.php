@@ -44,8 +44,8 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+            if (!$user || !password_verify($this->password, $user->getAttribute('upass'))) {
+                $this->addError($attribute, 'Ошибка в имени пользователя или пароле');
             }
         }
     }
@@ -61,6 +61,14 @@ class LoginForm extends Model
         }
         return false;
     }
+    
+    public function attributeLabels(){
+      return [
+        'username' => 'Имя пользователя',
+        'password' => 'Пароль',
+        'rememberMe' => 'Запомнить меня'
+      ];
+    }
 
     /**
      * Finds user by [[username]]
@@ -70,9 +78,9 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
-        }
-
+            $this->_user = WebUser::findOne(['uname'=>$this->username] );
+        }        
+        
         return $this->_user;
     }
 }
