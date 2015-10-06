@@ -39,6 +39,11 @@ $config = [
         ],
         'db' => require(__DIR__ . '/db.php'),
     ],
+    'modules' => [
+      'gridview' =>  [
+        'class' => '\kartik\grid\Module'        
+      ]
+    ],
     'params' => $params,
 ];
 

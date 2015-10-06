@@ -71,7 +71,21 @@ class SiteController extends Controller {
   
   public function actionSearch() {      
     $model = new \app\models\SearchForm();
-    return $this->render('search',['model'=>$model]);
+    
+    return $this->render('search',['model'=>$model]);    
+  }
+  
+  public function actionMakers() {      
+    $model = new \app\models\SearchForm();
+    
+    if( !$model->load(\yii::$app->request->post(), '') ){
+      return $this->render('error',['name'=>'Ошибка запроса', 'message'=>'Ошибка данных']);
+    }
+    
+    $provider = new \app\models\ProviderATCModel();    
+    $makers = $provider->getMakers($model->articul,$model->analog);    
+    
+    return $this->render('makers',['model'=>$model, 'makers'=>$makers]);
   }
     
 }

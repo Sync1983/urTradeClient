@@ -20,8 +20,8 @@ class WebUser extends ActiveRecord implements IdentityInterface{
   /*
    * Проверяет, является ли пользователь администратором 
    */
-  public function isAdmin(){
-    return boolval($this->getAttribute('is_admin'));
+  public function isAdmin(){    
+    return boolval( $this->getAttribute('is_admin') === 1 );
   }
   //============================= Protected ====================================
   //============================= Private ======================================
@@ -61,8 +61,8 @@ class WebUser extends ActiveRecord implements IdentityInterface{
     return $this->getAttribute('id');
   }
 
-  public function validateAuthKey($authKey){
-    return false;
+  public function validateAuthKey($authKey){    
+    return $this->authKey===$authKey;
   }
   
   public static function tableName(){

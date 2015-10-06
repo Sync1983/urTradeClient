@@ -34,21 +34,31 @@ $this->title = "Техресурс58.рф";
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    
+    $items = [
+      0 => ['label' => 'Главная',      'url' => ['/site/index']],
+      1 => ['label' => 'Цена и заказ', 'url' => ['/site/search']],
+      2 => ['label' => 'Контакты',     'url' => ['/site/contact']]      
+    ];    
+    
+    if( Yii::$app->user->isGuest ){
+      $items[] = ['label' => 'Вход',     'url' => ['/site/login']];      
+    } else {
+      /* @var $identity app\models\WebUser */
+      $identity = \yii::$app->user->getIdentity();
+      if( $identity && $identity->isAdmin() ){
+        $items[] = [  'label' => 'Управление клиентами',  'url' => ['/client/index']];
+        $items[] = [  'label' => 'Управление заказами',   'url' => ['/order/index']];        
+      }
+      
+      $items[] = [  'label' => 'Выход(' . Yii::$app->user->identity->uname . ')',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']];      
+    }
+    
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Главная',      'url' => ['/site/index']],
-            ['label' => 'Цена и заказ', 'url' => ['/site/search']],
-            ['label' => 'Контакты',     'url' => ['/site/contact']],
-          
-            Yii::$app->user->isGuest ?
-                ['label' => 'Вход',     'url' => ['/site/login']] :
-                [
-                    'label' => 'Выход(' . Yii::$app->user->identity->uname . ')',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
-                ],
-        ],
+        'items' => $items,
     ]);
     NavBar::end();
     ?>

@@ -1,0 +1,51 @@
+/* 
+    Created on : 06.10.2015, 14:19:11
+    Author     : Sync<atc58.ru>
+*/
+.search-row {
+  width: 100%;
+  padding: 7px 15px;
+  border-radius: 10px;
+  background-color: black;
+  color: #616161;
+  text-align: center;
+  position: relative; }
+  .search-row > label {
+    font-weight: bold; }
+  .search-row > .form-group {
+    width: 69%; }
+    .search-row > .form-group > label {
+      width: 10%; }
+    .search-row > .form-group > input {
+      width: 89%; }
+  .search-row > .btn {
+    width: 10%;
+    margin: 0 15px; }
+
+.panel-full-screen {
+  top: 60px;
+  bottom: 65px;
+  width: 80%;
+  left: 10%;
+  margin: 0 auto;
+  overflow-y: auto;
+  position: absolute; }
+
+.selector {
+  width: 15%;
+  max-height: 50%;
+  border-right: 3px solid black;
+  float: left;
+  display: inline-block;
+  position: relative; }
+
+.viewer {
+  top: 0px;
+  width: 85%;
+  height: 100%;
+  min-height: 100%;
+  border: 1px solid red;
+  float: left;
+  display: block; }
+
+/*# sourceMappingURL=site-trs.css.map */
