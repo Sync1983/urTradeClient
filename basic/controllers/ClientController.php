@@ -24,6 +24,30 @@ class ClientController extends Controller {
   }
 
   public function actionIndex($new_user=null) {
+    /* hasEditable request - change field value */
+    if( \yii::$app->request->post('hasEditable',0) == 1 ){
+      $key  = \yii::$app->request->post('editableKey',null);
+      $index= \yii::$app->request->post('editableIndex',null);
+      $data = \yii::$app->request->post('WebUser',null);
+      
+      if( ($key === null) || ($index === null) || !$data ){
+        echo json_encode(['output'=>'','message'=>'']);
+        return false;
+      }
+      
+      $out = "";
+      $user = \app\models\WebUser::findOne(['id'=>  intval($key)]);
+      
+      foreach( $data[$index] as $key=>$value){
+        $user->setAttribute($key, $value);
+        $out .= $value;
+      }
+      
+      $user->save();
+      echo json_encode(['output'=>$out,'message'=>'']);
+      return;
+    }
+    
     $query = \app\models\WebUser::find()->indexBy('id');    
     $clientProvider = new ActiveDataProvider([
       'query' => $query,

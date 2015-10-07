@@ -16,16 +16,33 @@ class ProviderATCModel extends Object{
   
   //============================= Public =======================================
   public function getMakers($part_id, $analog){
-    $makers = $this->request(['part_id' => $part_id, 'analog' => $analog ]);
+    $makers = $this->request('rest/makers',['part_id' => $part_id, 'analog' => $analog ]);
     
     return $makers;
   }
   
+  public function getParts($part_id, $analog, $maker){
+    $parts = $this->request('rest/parts',['part_id' => $part_id, 'analog' => $analog, 'maker'=>$maker ]);
+    if( !is_array($parts) ){
+      \yii::trace($parts);
+      return [];
+    }
+    
+    $result = [];
+    foreach( $parts as $part){
+      $part_model = new PartModel();
+      $part_model->setAttributes($part,false);
+      $result[]  = $part_model;      
+    }
+    
+    return $result;
+  }
+  
   //============================= Protected ====================================
-  protected function request($get){
+  protected function request($action,$get){
     
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "http://atc58.ru/index.php?r=rest/makers");
+    curl_setopt($ch, CURLOPT_URL, "http://atc58.ru/index.php?r=$action");
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_VERBOSE, true);

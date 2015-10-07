@@ -57,8 +57,28 @@
   top: 0px;
   width: 85%;
   height: 100%;
-  min-height: 100%;
-  border: 1px solid red;
+  min-height: 100%;  
   float: left;
   display: block;
+  
+  #parts{
+    
+    tr {
+      
+      &:hover{
+        background-color: #B7D6E7;
+      }
+      
+      &:nth-child(even){
+        background-color: #E5F0FF;
+        
+        &:hover{
+          background-color: #B7D6E7;
+        }
+      }
+      
+    }
+  }
 }
+
+

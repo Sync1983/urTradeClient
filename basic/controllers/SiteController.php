@@ -87,5 +87,18 @@ class SiteController extends Controller {
     
     return $this->render('makers',['model'=>$model, 'makers'=>$makers]);
   }
+  
+  public function actionParts() {      
+    $maker = \yii::$app->request->post('maker','');
+    $model = new \app\models\SearchForm();
+    
+    if( !$model->load(\yii::$app->request->post(), '') ){
+      return $this->render('error',['name'=>'Ошибка запроса', 'message'=>'Ошибка данных']);
+    }
+    
+    $provider = new \app\models\ProviderATCModel();    
+    $parts = $provider->getParts($model->articul, intval($model->analog), $maker);    
+    return $this->renderPartial('parts',['model'=>$model, 'parts'=>$parts]);
+  }
     
 }
