@@ -50,11 +50,11 @@ class DeployController extends Controller {
   
   public function actionDeployIndex(){
     $f = fopen(__DIR__ . "/../web/index.php", "w");
-    $idex_php = "<?php"
-        . "require(__DIR__ . '/../vendor/autoload.php');"
-        . "require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');"
-        . '$config' . " = require(__DIR__ . '/../config/web.php');"
-        . "(new yii\web\Application(" . '$config' . "))->run();";
+    $idex_php = "<?php \r\n"
+        . "require(__DIR__ . '/../vendor/autoload.php');\r\n"
+        . "require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');\r\n"
+        . '$config' . " = require(__DIR__ . '/../config/web.php');\rn"
+        . "(new yii\web\Application(" . '$config' . "))->run();\r\n";
     fputs($f, $idex_php, strlen($idex_php));
     fclose($f);
   }
