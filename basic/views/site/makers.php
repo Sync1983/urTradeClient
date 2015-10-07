@@ -3,10 +3,7 @@
 /* @var $model app\models\SearchForm */
 \app\assets\TableAsset::register($this);
 ?>
-<script>
-  var articul = "<?= $model->articul ?>";
-  var part_url= "<?= yii\helpers\Url::to(['site/parts'])?>";
-</script>
+
 <div class="panel panel-default panel-full-screen">
   <div class="panel-heading">
     <h3 class="panel-title">Выберите производителя артикула <b><?= $model->articul ?></b> 
@@ -18,10 +15,7 @@
               'threeState'=>false,
             ],
             'pluginEvents' => [
-              "change"=>"function() { "
-              . "var analog = $('#analog').val();\n"              
-              . "if( analog == 1 ) { \n $('tr[data-analog]').removeClass('hidden');\n }"
-              . "else { \n $('tr[data-analog]').addClass('hidden');\n} \n}",              
+              "change"=>"function() { $('tr[data-analog]').showBy($('#analog').val())}"              
             ]            
         ]);?> <label for="analog">Аналоги</label></h3>
   </div>
@@ -38,42 +32,36 @@
     </div>
   </div>
 </div>
+
+<div id="loader" class="hidden">
+  <h4>Загружаем...</h4>
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+</div>
+
+<div id="popup-to-basket" class="hidden">
+  <form class="form-inline" action="<?= yii\helpers\Url::to(['basket/place']); ?>">
+    <h5>От {min} до {max} шт.</h5>
+    <h5>Упаковка по {lot} шт.</h5>
+    <?=  \yii\bootstrap\Html::hiddenInput(\yii::$app->request->csrfParam, \yii::$app->request->csrfToken)?>
+    <div class="input-group">      
+      <input type="number" min="1" max="{max}" step="{lot}" name="basket_count" value="{min}" class="form-control to-basket-count" placeholder="Количество" />
+      <span class="input-group-addon" class="to-basket-header">шт.</span>
+      <span class="input-group-btn">
+        <button class="btn btn-default to-basket-btn" type="button">Добавить</button>
+      </span>
+    </div>
+  </form>
+</div>  
+    
 <?php
-$script = <<<SCRIPT
-    var viewer = $('div.viewer');
-    
-    function loadParts(maker){
-      var analog = $('#analog').val();
-      $.ajax({
-        url: part_url,
-        method: "POST",
-        data: {articul: articul,analog:analog,maker:maker},        
-        beforeSend: function( xhr ) {
-          $(viewer).html('<h4>Loading...</h4><div class="progress">' +
-            '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">'+
-              '<span class="sr-only"></span>'+
-            '</div>'+
-          '</div>');    
-        }
-      }).done(function(data){
-        $(viewer).html(data);
-        table = $("#parts").DataTable({
-          paging: false,
-          "order": [[ 0, 'asc' ], [ 3, 'asc' ]],
-          language: {
-            search: "Быстрый поиск:"
-          }
-        });
-        $('[data-toggle="popover"]').popover();
-      });      
-    };
-    
-    $('a[data-name]').each(function(index,item){
-      $(item).click(function(event) {
-        var target = event.currentTarget; 
-        var name = $(target).attr('data-name');
-        loadParts(name);
-      });
-    });
-SCRIPT;
+$url = yii\helpers\Url::to(['site/parts']);
+$script = "$('a[data-name]').initPartSelect('div.viewer',"
+    . "function( data ){"
+    .   "return {articul:'" . $model->articul . "',maker: data.attr('data-name'),analog: $('#analog').val()}"
+    . "}"
+    . ",'$url');";
 $this->registerJs($script);
