@@ -39,6 +39,18 @@ class BasketPartModel extends ActiveRecord {
       'basket_count' 
     ];
   }
+  
+  public function attributeLabels(){
+    return[      
+      'producer'  => 'Производитель',
+      'articul'   => 'Артикул',
+      'name'      => 'Название',
+      'count'     => 'На складе',      
+      'price'     => 'Цена',
+      'shiping'   => 'Доставка',
+      'basket_count' => 'В корзине' 
+    ];
+  }
 
   public function rules(){
     return[

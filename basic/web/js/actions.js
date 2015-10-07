@@ -16,6 +16,29 @@
     
   };
   
+  $.fn.toOrderList = function( url ) {
+    
+    function click(event){
+      
+      var keys = $('#basket-list').yiiGridView('getSelectedRows');
+      
+      $.ajax({
+        url: url,
+        method: "POST",
+        data: {ids:keys}
+      }).done(function (data){
+        if( data ){
+          window.location.href = data;
+        }
+      });
+      
+    }
+    
+    $(this).click(click);
+    
+    return this;
+  };
+  
   $.fn.toBasket = function( data ) {
     var deferred = new $.Deferred();
     var form = $(this).parent().parent().parent();
