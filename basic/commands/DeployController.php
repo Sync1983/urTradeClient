@@ -29,6 +29,8 @@ class DeployController extends Controller {
     $this->execSSH([
       'cd ~/;',
       'pwd',
+      'cd ~/urTradeClient; git add .',
+      'cd ~/urTradeClient; git commit -a -m"pre pull commit"',
       'cd ~/urTradeClient; git pull',      
       ]);    
   }
@@ -37,6 +39,8 @@ class DeployController extends Controller {
     $this->execSSH([
       'cd ~/;',
       'pwd',
+      'cd ~/urTradeClient; git add .',
+      'cd ~/urTradeClient; git commit -a -m"pre pull commit"',
       'cd ~/urTradeClient; git pull',
       'cd ~/urTradeClient/basic; php composer.phar update'
       ]);

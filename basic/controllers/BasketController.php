@@ -3,11 +3,16 @@
 namespace app\controllers;
 
 use yii\web\Controller;
+use yii\data\ActiveDataProvider;
 
 class BasketController extends Controller {
     
   public function behaviors(){
-    return [];
+    return [
+      'user_acces' => [
+        'class' => \app\behavior\UserBehavior::className()
+      ]
+    ];
   }
 
   public function actions() {
@@ -19,13 +24,63 @@ class BasketController extends Controller {
   }
 
   public function actionIndex() {
+    /* @var $user \app\models\WebUser */
+    $user = \yii::$app->user->getIdentity();
     
+    if( \yii::$app->request->post('hasEditable',0) == 1 ){
+      $key  = \yii::$app->request->post('editableKey',null);
+      $index= \yii::$app->request->post('editableIndex',null);
+      $data = \yii::$app->request->post('BasketPartModel',null);
+      
+      if( ($key === null) || ($index === null) || !$data ){
+        echo json_encode(['output'=>'','message'=>'']);
+        return false;
+      }
+      
+      $out = "";
+      $part = \app\models\BasketPartModel::findOne(['id'=>  intval($key),'uid'=>$user->getId()]);
+      
+      foreach( $data[$index] as $key=>$value){
+        $part->setAttribute($key, $value);
+        $out .= $value;
+      }
+      
+      if ( $part->save() ){
+        echo json_encode(['output'=>$out,'message'=>'']);        
+      }
+      return;
+    }
+    
+    
+    $query = \app\models\BasketPartModel::find()->where(['uid'=>$user->getId()])->indexBy('id');
+    
+    $basketProvider = new ActiveDataProvider([
+      'query' => $query,
+      'pagination' => [
+        'pageSize' => 20,
+      ],
+    ]);
+    
+    return $this->render('index',['basketProvider' => $basketProvider]);
   }
   
-  public function actionPlace(){
-    if( \yii::$app->user->isGuest ){
-      return "Для добавления в корзину необходима авторизация";
+  public function actionDelete(){
+    $id = \yii::$app->request->get('id',null);
+    if( !$id ){
+      return $this->redirect(['basket/index']);
     }
+    $uid = \yii::$app->user->getIdentity()->getId();
+    
+    $part = \app\models\BasketPartModel::findOne(['id'=>intval($id),'uid'=>$uid]);
+    if( !$part ){
+      return $this->redirect(['basket/index']);      
+    }
+    
+    $part->delete();
+    return $this->redirect(['basket/index']);        
+  }
+
+  public function actionPlace(){    
     /* @var $user \app\models\WebUser */
     $user = \yii::$app->user->getIdentity();    
     $basketPart = new \app\models\BasketPartModel();
@@ -41,6 +96,18 @@ class BasketController extends Controller {
       return "OK";      
     }
     return "Ошибка сохранения";
+  }
+  
+  public function actionOrder(){
+    $id = \yii::$app->request->get('id',null);
+    if( !$id ){
+      return $this->redirect(['basket/index']);
+    }
+    $uid = \yii::$app->user->getIdentity()->getId();
+    
+    
+    
+    return $this->redirect(['basket/index']);
   }
 
 }

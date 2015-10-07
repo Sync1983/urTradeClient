@@ -37,15 +37,18 @@ $this->title = "Техресурс58.рф";
     
     $items = [
       0 => ['label' => 'Главная',      'url' => ['/site/index']],
-      1 => ['label' => 'Цена и заказ', 'url' => ['/site/search']],
-      2 => ['label' => 'Контакты',     'url' => ['/site/contact']]      
+      1 => ['label' => 'Цена и заказ', 'url' => ['/site/search']],      
+      4 => ['label' => 'Контакты',     'url' => ['/site/contact']]      
     ];    
     
     if( Yii::$app->user->isGuest ){
       $items[] = ['label' => 'Вход',     'url' => ['/site/login']];      
     } else {
+      $items[2] = ['label' => 'Корзина', 'url' => ['/basket/index']];
+      
       /* @var $identity app\models\WebUser */
-      $identity = \yii::$app->user->getIdentity();
+      $identity = \yii::$app->user->getIdentity();      
+      
       if( $identity && $identity->isAdmin() ){
         $items[] = [  'label' => 'Управление клиентами',  'url' => ['/client/index']];
         $items[] = [  'label' => 'Управление заказами',   'url' => ['/order/index']];        
@@ -55,7 +58,7 @@ $this->title = "Техресурс58.рф";
                     'url' => ['/site/logout'],
                     'linkOptions' => ['data-method' => 'post']];      
     }
-    
+    ksort($items);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $items,
