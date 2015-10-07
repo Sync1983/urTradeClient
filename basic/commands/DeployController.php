@@ -19,6 +19,7 @@ class DeployController extends Controller {
   }
     
   public function actionDeploy(){
+    $this->initSSH();
     $this->actionPullUpdate();
     $this->actionDeployIndexSSH();
   }
@@ -50,8 +51,7 @@ class DeployController extends Controller {
   }
 
   public function init(){
-    $this->params = \yii::$app->params;
-    $this->initSSH();
+    $this->params = \yii::$app->params;    
     return parent::init();
   }
 
