@@ -22,6 +22,7 @@ class DeployController extends Controller {
     $this->initSSH();
     $this->actionPull();
     $this->actionDeployIndexSSH();
+    $this->actionDeployMigrateSSH();
   }
   
   public function actionPull(){
@@ -44,6 +45,13 @@ class DeployController extends Controller {
   public function actionDeployIndexSSH(){
     $this->execSSH([
       'cd ~/urTradeClient/basic; ./yii deploy/deploy-index'
+      ]);
+    
+  }
+  
+  public function actionDeployMigrateSSH(){
+    $this->execSSH([
+      'cd ~/urTradeClient/basic; ./yii migrate --interactive=0'
       ]);
     
   }
