@@ -55,7 +55,7 @@ class DeployController extends Controller {
         . "require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');"
         . '$config' . " = require(__DIR__ . '/../config/web.php');"
         . "(new yii\web\Application(" . '$config' . "))->run();";
-    fputs($f, $idex_php, count($idex_php));
+    fputs($f, $idex_php, strlen($idex_php));
     fclose($f);
   }
 
