@@ -98,7 +98,7 @@ class SiteController extends Controller {
     
     $provider = new \app\models\ProviderATCModel();    
     $parts = $provider->getParts($model->articul, intval($model->analog), $maker);    
-    return $this->renderPartial('parts',['model'=>$model, 'parts'=>$parts]);
+    return $this->renderAjax('parts',['model'=>$model, 'parts'=>$parts]);
   }
     
 }

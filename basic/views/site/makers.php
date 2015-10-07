@@ -19,8 +19,7 @@
             ],
             'pluginEvents' => [
               "change"=>"function() { "
-              . "var analog = $('#analog').val();\n"
-              . "console.log(analog);"              
+              . "var analog = $('#analog').val();\n"              
               . "if( analog == 1 ) { \n $('tr[data-analog]').removeClass('hidden');\n }"
               . "else { \n $('tr[data-analog]').addClass('hidden');\n} \n}",              
             ]            
@@ -65,6 +64,7 @@ $script = <<<SCRIPT
             search: "Быстрый поиск:"
           }
         });
+        $('[data-toggle="popover"]').popover();
       });      
     };
     
