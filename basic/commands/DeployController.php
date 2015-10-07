@@ -20,7 +20,7 @@ class DeployController extends Controller {
     
   public function actionDeploy(){
     $this->initSSH();
-    $this->actionPullUpdate();
+    $this->actionPull();
     $this->actionDeployIndexSSH();
   }
   
@@ -54,7 +54,7 @@ class DeployController extends Controller {
         . "require(__DIR__ . '/../vendor/autoload.php');"
         . "require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');"
         . '$config' . " = require(__DIR__ . '/../config/web.php');"
-        . "(new yii\web\Application($config))->run();";
+        . "(new yii\web\Application(" . '$config' . "))->run();";
     fputs($f, $idex_php, count($idex_php));
   }
 
