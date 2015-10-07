@@ -24,6 +24,14 @@ class DeployController extends Controller {
     $this->actionDeployIndexSSH();
   }
   
+  public function actionPull(){
+    $this->execSSH([
+      'cd ~/;',
+      'pwd',
+      'cd ~/urTradeClient; git pull',      
+      ]);    
+  }
+  
   public function actionPullUpdate(){
     $this->execSSH([
       'cd ~/;',
@@ -41,7 +49,7 @@ class DeployController extends Controller {
   }
   
   public function actionDeployIndex(){
-    $f = fopen(__DIR__ . "../web/index.php", "w");
+    $f = fopen(__DIR__ . "/../web/index.php", "w");
     $idex_php = "<?php"
         . "require(__DIR__ . '/../vendor/autoload.php');"
         . "require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');"
