@@ -103,9 +103,19 @@ class BasketController extends Controller {
     if( !$id ){
       return $this->redirect(['basket/index']);
     }
+    
     $uid = \yii::$app->user->getIdentity()->getId();
+    $part = \app\models\BasketPartModel::findOne(['id'=>intval($id),'uid'=>$uid]);
     
+    $order = new \app\models\OrderPartModel();
     
+    $order->setAttributes($part->getAttributes());
+    $order->setAttribute('status', \app\models\OrderPartModel::OS_WAIT);
+    
+    if( $order->save() ){
+      $part->delete();
+      return $this->redirect(['order/index']);
+    }
     
     return $this->redirect(['basket/index']);
   }

@@ -28,7 +28,7 @@
         data: {ids:keys}
       }).done(function (data){
         if( data ){
-          window.location.href = data;
+          //window.location.href = data;
         }
       });
       
