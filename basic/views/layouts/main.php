@@ -45,13 +45,14 @@ $this->title = "Техресурс58.рф";
       $items[] = ['label' => 'Вход',     'url' => ['/site/login']];      
     } else {
       $items[2] = ['label' => 'Корзина', 'url' => ['/basket/index']];
+      $items[3] = ['label' => 'Заказы',  'url' => ['/order/index']];
       
       /* @var $identity app\models\WebUser */
       $identity = \yii::$app->user->getIdentity();      
       
       if( $identity && $identity->isAdmin() ){
         $items[] = [  'label' => 'Управление клиентами',  'url' => ['/client/index']];
-        $items[] = [  'label' => 'Управление заказами',   'url' => ['/order/index']];        
+        $items[] = [  'label' => 'Управление заказами',   'url' => ['/order/admin']];        
       }
       
       $items[] = [  'label' => 'Выход(' . Yii::$app->user->identity->uname . ')',

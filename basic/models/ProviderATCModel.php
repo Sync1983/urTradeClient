@@ -40,12 +40,16 @@ class ProviderATCModel extends Object{
   
   //============================= Protected ====================================
   protected function request($action,$get){
+    $user = 'diman.tarasov';
+    $pass = '2e073bf51668b37819a6d95dd18c3e8e';
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "http://atc58.ru/index.php?r=$action");
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, "$user:$pass");
+    curl_setopt($ch, CURLOPT_VERBOSE, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);                
     curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($get));
     $site_answer = curl_exec($ch);    

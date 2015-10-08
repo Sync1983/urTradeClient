@@ -1,5 +1,5 @@
 <?php
-
+/* Basket Index */
 /* @var $this yii\web\View */
 
 use kartik\grid\GridView;
@@ -24,7 +24,7 @@ echo GridView::widget([
     'export'  => false,
     'panel'=>[
         'type'=>GridView::TYPE_PRIMARY,
-        'heading'=>"Пользователи",
+        'heading'=>"Кррзина",
     ],
     'toolbar'=> [
         [
