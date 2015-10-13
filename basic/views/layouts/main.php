@@ -38,7 +38,7 @@ $this->title = "Техресурс58.рф";
     $items = [
       0 => ['label' => 'Главная',      'url' => ['/site/index']],
       1 => ['label' => 'Цена и заказ', 'url' => ['/site/search']],      
-      4 => ['label' => 'Контакты',     'url' => ['/site/contact']]      
+      5 => ['label' => 'Контакты',     'url' => ['/site/contact']]
     ];    
     
     if( Yii::$app->user->isGuest ){
@@ -46,13 +46,15 @@ $this->title = "Техресурс58.рф";
     } else {
       $items[2] = ['label' => 'Корзина', 'url' => ['/basket/index']];
       $items[3] = ['label' => 'Заказы',  'url' => ['/order/index']];
+      $items[4] = ['label' => 'Баланс',   'url' => ['/balance/index']];
       
       /* @var $identity app\models\WebUser */
       $identity = \yii::$app->user->getIdentity();      
       
       if( $identity && $identity->isAdmin() ){
-        $items[] = [  'label' => 'Управление клиентами',  'url' => ['/client/index']];
-        $items[] = [  'label' => 'Управление заказами',   'url' => ['/order/admin']];        
+        $items[] = [  'label' => 'Клиенты(*)',  'url' => ['/client/index']];
+        $items[] = [  'label' => 'Заказы(*)',   'url' => ['/order/admin']];
+        $items[] = [  'label' => 'Балансы(*)',   'url' => ['/balance/admin']];
       }
       
       $items[] = [  'label' => 'Выход(' . Yii::$app->user->identity->uname . ')',
