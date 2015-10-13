@@ -33,6 +33,7 @@ class WebUser extends ActiveRecord implements IdentityInterface{
       'upass',
       'is_admin',
       'markup',
+      'credit',
       'name',
       'phone',
       'mail'
@@ -46,10 +47,11 @@ class WebUser extends ActiveRecord implements IdentityInterface{
       ['upass',   'string', 'max'=>72],
       ['is_admin','boolean' ],
       ['markup',  'integer','min'=>0, 'max'=>999],
+      ['credit',  'number','min'=>0],
       ['name',    'string', 'max'=>250],
       ['phone',   'string', 'max'=>11],             
       ['mail',    'string', 'max'=>250],
-      [['uname','upass','is_admin','markup','name','phone','mail'],'safe'],
+      [['uname','upass','is_admin','markup', 'credit','name','phone','mail'],'safe'],
     ];
   }
   

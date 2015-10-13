@@ -30,6 +30,19 @@ echo GridView::widget([
       [ 'class' => '\kartik\grid\DataColumn',
         'attribute' => 'id',
       ],
+      [
+        'class'=>'kartik\grid\ExpandRowColumn',
+        'width'=>'50px',
+        'value'=>function ($model, $key, $index, $column) {
+            return GridView::ROW_COLLAPSED;
+        },
+        'detail'=>function ($model, $key, $index, $column) {
+          return \yii::$app->controller->renderPartial('balance',['model'=>$model]);
+            //return Yii::$app->controller->renderPartial('_expand-row-details', ['model'=>$model]);
+        },
+        'headerOptions'=>['class'=>'kartik-sheet-style'],
+        'expandOneOnly'=>true
+      ],
       [ 'class' => '\kartik\grid\EditableColumn',
         'label' => 'Логин',
         'attribute' => 'uname',

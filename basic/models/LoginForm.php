@@ -43,7 +43,7 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-
+            
             if (!$user || !password_verify($this->password, $user->getAttribute('upass'))) {
                 $this->addError($attribute, 'Ошибка в имени пользователя или пароле');
             }
