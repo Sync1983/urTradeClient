@@ -126,7 +126,8 @@ class OrderPartModel extends BasketPartModel {
     $attr = parent::attributes();
     return array_merge( $attr ,[
       'status',
-      'pay'
+      'pay',
+      'place'
     ]);
   }
   
@@ -135,14 +136,15 @@ class OrderPartModel extends BasketPartModel {
     $labels['basket_count'] = 'Кол-во';
     return array_merge($labels,[
       'status'  => 'Статус',
-      'pay'     => 'Оплачено'
+      'pay'     => 'Оплачено',
+      'place'   => 'Размещен'
     ]);    
   }
   
   public function rules(){    
     return array_merge(parent::rules(),[
       ['status','in','range'=> self::getStatusIDs()],
-      ['pay','boolean']
+      [['pay','place'],'boolean']
     ]);
   }
   
