@@ -60,7 +60,10 @@ echo GridView::widget([
       ],            
       [ 'class' => '\kartik\grid\DataColumn',        
         'attribute' => 'basket_count',
-      ],      
+      ],
+      [ 'class' => '\kartik\grid\BooleanColumn',
+        'attribute' => 'pay',
+      ],
       [
         'class' => '\kartik\grid\ActionColumn',
         'header' => 'Функции',

@@ -65,7 +65,7 @@ class BalanceModel extends ActiveRecord {
   public function rules(){    
     return [
       [['id','uid','time'],'integer','min'=>0],
-      [['value'],'integer'],
+      [['value'],'number'],
       [['comment'], 'string']
     ];
   }
