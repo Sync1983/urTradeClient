@@ -37,11 +37,30 @@ class ProviderATCModel extends Object{
     
     return $result;
   }
-  
+
+  /**
+   * Добавление заказа в поставщику
+   * @param OrderPartModel $part
+   */
+  public function sendToOrder($part){    
+    $part_array = $part->getAttributes();
+
+    $part_array['comment'] = "User ID: " . $part->uid;
+    
+    $answer = $this->request('rest/order',$part_array);
+    if( isset($answer['status']) && ($answer['status']=="OK") ){
+      return true;
+    }    
+    var_dump($answer);
+    return false;
+  }
+
   //============================= Protected ====================================
   protected function request($action,$get){
     $user = 'diman.tarasov';
     $pass = '2e073bf51668b37819a6d95dd18c3e8e';
+    //$user = 'test1';
+    //$pass = md5('pass1');
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "http://atc58.ru/index.php?r=$action");

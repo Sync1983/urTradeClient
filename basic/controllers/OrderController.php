@@ -163,4 +163,41 @@ class OrderController extends Controller {
     return ['status'=>"Статус изменен. Новый статус [" . $order->getCurrentStatus() . "]"];
   }
 
+  public function actionPlaceProvider(){
+
+    /* @var $user \app\models\WebUser */
+    $user = \yii::$app->user->getIdentity();
+
+    if( !$user->isAdmin() ){
+      return $this->redirect(['order/index']);
+    }
+
+    \yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    
+    $id     = \yii::$app->request->post('id',null);
+    
+    if( !$id ){
+      return ['error' => 'ID Error'];
+    }
+
+    $order = \app\models\OrderPartModel::findOne(['id' => $id]);
+    if( !$order ){
+      return ['error' => 'Заказ не найден'];
+    }
+
+    $provider = new \app\models\ProviderATCModel();
+    if ( !$provider->sendToOrder($order) ){
+      return ['error' => 'Заказ не размещен'];
+    }
+
+    $order->setAttribute('place', 1);
+    if( $order->status == \app\models\OrderPartModel::OS_WAIT ){
+      $order->setAttribute('status', \app\models\OrderPartModel::OS_IN_ORDER);
+    }
+
+    $order->save();
+
+    return ['status'=>"OK"];
+  }
+
 }

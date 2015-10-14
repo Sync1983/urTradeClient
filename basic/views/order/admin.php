@@ -81,8 +81,20 @@ echo GridView::widget([
       [
         'class' => '\kartik\grid\ActionColumn',
         'header' => 'Функции',
-        'template' => '{update} {delete}',
+        'template' => '{update} {delete} {order}',
         'buttons' => [
+          'order' => function($url,$model){
+        
+            if( $model->place ){
+              return '';
+            }
+
+            return Html::button('<span class="glyphicon glyphicon-share-alt"></span>',[
+              'title' => 'Разместить заказ',
+              'onclick' => 'partToOrder(this,' . $model->id . ');'
+            ]);
+            
+          },
           'update' => function($url,$model){
             /* @var $model \app\models\OrderPartModel */
             $label = '<span class="glyphicon glyphicon-pencil"></span>';
@@ -166,6 +178,19 @@ $this->registerJs('$("button.to-order").toOrderList("' . yii\helpers\Url::to(['o
       }
     }).error(function(error){
       console.log(error);
+    });
+  }
+
+  function partToOrder($button,$id){
+    $.ajax({
+      url:    '<?= yii\helpers\Url::to(['order/place-provider']);?>',
+      method: "POST",
+      data:   {id: $id}
+    }).done(function(data){
+      if( data.status && (data.status === "OK") ){
+        $($button).hide();
+      }
+      console.log(data);
     });
   }
 </script>
