@@ -133,4 +133,34 @@ class OrderController extends Controller {
     return $this->render('admin',['orderProvider' => $orderProvider]);
   }
 
+  public function actionChangeStatus(){
+    
+    /* @var $user \app\models\WebUser */
+    $user = \yii::$app->user->getIdentity();
+
+    if( !$user->isAdmin() ){
+      return $this->redirect(['order/index']);
+    }
+
+    $id     = \yii::$app->request->post('id',null);    
+    $status = \yii::$app->request->post('status',null);
+
+    \yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+    if( !$id ){
+      return ['error' => 'ID Error'];
+    }
+
+    $order = \app\models\OrderPartModel::findOne(['id' => $id]);
+    if( !$order ){
+      return ['error' => 'Заказ не найден'];
+    }
+
+    if( !$order->changeStatus($status) ){
+      return ['error' => 'Ошибка сохранения. Проверьте баланс пользователя'];
+    }
+
+    return ['status'=>"Статус изменен. Новый статус [" . $order->getCurrentStatus() . "]"];
+  }
+
 }
