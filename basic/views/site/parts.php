@@ -40,7 +40,7 @@ $url = yii\helpers\Url::to(['basket/place']);
       <script type="application/json">
         <?= json_encode($part); ?>
       </script>
-      <td data-order="<?= $part->is_original;?>"><?= $part->producer . $part->provider?></td>
+      <td data-order="<?= $part->is_original;?>"><?= $part->producer?></td>
       <td data-order="<?= $part->is_original;?>"><?= $part->articul?></td>
       <td data-order="<?= $part->is_original;?>"><?= $part->name?></td>      
       <td><?= $show_price ?></td>
