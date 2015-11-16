@@ -13,7 +13,7 @@ $balance_model = new BalanceModel();
 $balance = BalanceModel::getBalance($qkey);
 ?>
 <div class="container" style="width:90%">
-<h3>Общий баланс пользователя <b><u><?= round($balance['credit'],2) ?></u></b> руб. и начальный кредит <b>
+<h3>Общий баланс пользователя <b><u><?= round($balance['full']-$balance['credit'],2) ?></u></b> руб. и начальный кредит <b>
       <?= Editable::widget([
         'name'            => "WebUser[$qkey][credit]",
         //'model'               => $model,
