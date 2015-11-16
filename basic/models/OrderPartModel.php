@@ -102,7 +102,7 @@ class OrderPartModel extends BasketPartModel {
       $balance = new BalanceModel();
       $balance->setAttribute('uid', $this->uid);
       $balance->setAttribute('comment', $comment);
-      $balance->setAttribute('value', $price_value);
+      $balance->setAttribute('value', -$price_value);
 
       $this->pay = 1;
 
