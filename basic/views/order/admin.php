@@ -17,7 +17,7 @@ echo GridView::widget([
     //'filterModel' => $searchModel,
     'showPageSummary' => true,
     'id'  => 'basket-list',
-    'pjax'=>true,
+    'pjax'=>false,
     'pjaxSettings'=>[
         'neverTimeout'=>true
     ],
