@@ -22,7 +22,10 @@
   <div class="panel-body">
     <div class="selector">      
       <div class="list-group">
-        <?php foreach($makers as $maker=>$key): ?>
+	<?php if( !$makers ){
+		  $makers = [];
+		};
+        foreach($makers as $maker=>$key): ?>
         <a href="#" class="list-group-item" data-name="<?= $maker ?>"><?= $maker ?><span class="glyphicon glyphicon-chevron-right" style="float: right;"></span></a>
         <?php endforeach; ?>
       </div>
