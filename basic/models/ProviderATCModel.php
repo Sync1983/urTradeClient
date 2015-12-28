@@ -58,7 +58,7 @@ class ProviderATCModel extends Object{
   //============================= Protected ====================================
   protected function request($action,$get){
     $user = 'diman.tarasov';
-    $pass = '2e073bf51668b37819a6d95dd18c3e8e';
+    $pass = '827ccb0eea8a706c4c34a16891f84e7b';
     //$user = 'test1';
     //$pass = md5('pass1');
     
