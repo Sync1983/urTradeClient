@@ -54,7 +54,7 @@ $this->title = "Техресурс58.рф";
       if( $identity && $identity->isAdmin() ){
         $items[] = [  'label' => 'Клиенты(*)',  'url' => ['/client/index']];
         $items[] = [  'label' => 'Заказы(*)',   'url' => ['/order/admin']];
-        $items[] = [  'label' => 'Балансы(*)',   'url' => ['/balance/admin']];
+        $items[] = [  'label' => 'Балансы(*)',  'url' => ['/balance/admin']];
       }
       
       $items[] = [  'label' => 'Выход(' . Yii::$app->user->identity->uname . ')',

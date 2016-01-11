@@ -6,18 +6,29 @@
 
 <div class="panel panel-default panel-full-screen">
   <div class="panel-heading">
-    <h3 class="panel-title">Выберите производителя артикула <b><?= $model->articul ?></b> 
-      <?= kartik\checkbox\CheckboxX::widget([
-            'id'  => 'analog',
+    <div class="panel-title title-bar"><span class="text">Выберите производителя артикула</span><b><?= $model->articul ?></b>
+      <script>
+        var markupData = [         
+          {id:"10",text:"asd"},
+          {id:"25",text:"asd1"},
+          {id:"50",text:"asd12"}
+        ];
+      </script>
+      <select class="markup-selector"></select>
+      <label for="analog" class="analog-label">Аналоги</label>
+      <?= kartik\checkbox\CheckboxX::widget([            
+            'id'    => 'analog',
             'name'  => 'analog',
-            'value' => $model->analog,
+            'value' => $model->analog,            
             'pluginOptions'=>[
               'threeState'=>false,
+              'theme' => 'analog',
             ],
             'pluginEvents' => [
               "change"=>"function() { $('tr[data-analog]').showBy($('#analog').val())}"              
             ]            
-        ]);?> <label for="analog">Аналоги</label></h3>
+        ]);?> 
+        </div>
   </div>
   <div class="panel-body">
     <div class="selector">      
@@ -58,7 +69,7 @@
       </span>
     </div>
   </form>
-</div>  
+</div>
     
 <?php
 $url = yii\helpers\Url::to(['site/parts']);
@@ -67,4 +78,6 @@ $script = "$('a[data-name]').initPartSelect('div.viewer',"
     .   "return {articul:'" . $model->articul . "',maker: data.attr('data-name'),analog: $('#analog').val()}"
     . "}"
     . ",'$url');";
+$this->registerJs($script);
+$script = "$('.markup-selector').markupInit();";
 $this->registerJs($script);

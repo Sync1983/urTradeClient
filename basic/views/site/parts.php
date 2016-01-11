@@ -43,7 +43,7 @@ $url = yii\helpers\Url::to(['basket/place']);
       <td data-order="<?= $part->is_original;?>"><?= $part->producer?></td>
       <td data-order="<?= $part->is_original;?>"><?= $part->articul?></td>
       <td data-order="<?= $part->is_original;?>"><?= $part->name?></td>      
-      <td><?= $show_price ?></td>
+      <td class="price" original-value="<?= $show_price ?>"><?= $show_price ?></td>
       <td><?= $part->shiping?></td>
       <td><?= $part->count ?></td>
       <td><button 

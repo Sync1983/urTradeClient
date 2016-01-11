@@ -49,4 +49,29 @@
   .viewer #parts tr:hover {
     background-color: #B7D6E7; }
 
+.title-bar > span.text {
+  padding: 0 15px; }
+.title-bar > label.analog-label {
+  top: 2px;
+  padding: 0 5px;
+  cursor: pointer;
+  float: right;
+  position: relative; }
+.title-bar select.markup-selector {
+  width: 150px;
+  float: right; }
+.title-bar span.select2 {
+  top: -2px;
+  float: right;
+  position: relative; }
+
+span.markup-item > span {
+  float: right; }
+  span.markup-item > span:hover {
+    color: #00ccff; }
+
+.cbx-analog {
+  padding: 0 4px;
+  float: right; }
+
 /*# sourceMappingURL=site-trs.css.map */

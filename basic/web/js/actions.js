@@ -1,4 +1,44 @@
+/* global parseFloat */
+
 (function ( $ ) {  
+  $.markup = 0;
+  
+  $.fn.markupUpdate = function onMarkupChange( event ){    
+    $.markup = parseFloat(( event && event.params && event.params.data && event.params.data.id ) || $.markup);
+    
+    $('td.price').each(function(index, item){
+      var price = parseFloat($(item).attr('original-value'));
+      var newPrice = parseFloat(price + (price * $.markup)/100).toFixed(2);
+      $(item).text( newPrice );      
+    });
+  };
+
+  $.fn.markupInit = function (ctrl){
+    var select = $(this).select2({
+      placeholder:  {
+        id: 0,
+        text: "Наценка"
+      },
+      allowClear:   true,
+      minimumResultsForSearch: Infinity,
+      data:         markupData,
+      templateResult: function(state){
+        return $('<span class="markup-item">' + state.text + '<span class="glyphicon glyphicon-trash"></span></span>');
+      }
+    });
+    console.log(select.select2());
+
+    select.val(null).trigger("change");
+    select.addOptions( [{text:"asdasd"}] );
+
+    $(this).on("select2:select", function (e) {
+      $().markupUpdate(e);
+    });
+    $(this).on("select2:unselect", function (e) {
+      $.markup = 0;
+      $().markupUpdate(null);
+    });
+  };
   
   $.fn.mirror = function( src ) {
     return this.html($(src).html());
@@ -92,6 +132,9 @@
             search: "Быстрый поиск:"
           }
         });
+
+
+
         var html = $("#popup-to-basket").html();
         
         $('button[data-to-basket]').popover({
