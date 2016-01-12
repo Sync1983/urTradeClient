@@ -102,6 +102,8 @@
 span.markup-item {  
   & > span{
     float: right;
+    z-index: 10001;
+    
     
     &:hover{
       color: #00ccff;
@@ -112,6 +114,45 @@ span.markup-item {
 .cbx-analog{
   padding: 0 4px;
   float: right;   
+}
+
+.markup-add{
+  top:    -50px;
+  width:  250px;
+  margin-right: 150px;
+  float:  right;
+  position: relative; 
+  display: none;
+  z-index: 1001;
+  
+  label {
+    width: 100%;
+    text-align: center;
+  }
+  input {
+    width: 100%;
+    padding: 0 10px;
+    background-color: #F9F9F9;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid;
+    outline: none;
+    
+    &.error {
+      background-color: #FBCCCC;
+    }
+  }
+  
+  .panel-footer{
+    background-color: transparent;
+    button {
+      top: -5px;
+      margin-left: 8px;
+      float: right;
+      position: relative;
+    }
+    float: none;
+  }
 }
 
 

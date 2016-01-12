@@ -2,8 +2,25 @@
 
 (function ( $ ) {  
   $.markup = 0;
-  
+  $.markupList = [];
+  $.markupSelector = null;
+
   $.fn.markupUpdate = function onMarkupChange( event ){    
+    var origEvent = event && event.params && event.params.originalEvent;
+    var origTarget = origEvent && origEvent.target;
+
+    if( $(origTarget).hasClass('delete-button') ){
+      //$.markupSelector.val(null).trigger('change');
+      markupDelete(event.params.data.id,event.params.data.text);
+      return false;
+    }
+    // Add button
+    if( event && event.params && event.params.data && event.params.data.id && (event.params.data.id==="null") ){      
+      $.markupSelector.val(null).trigger('change');
+      var popup = $("div.markup-add");
+      popup.show(100);
+    }
+    //Markup select
     $.markup = parseFloat(( event && event.params && event.params.data && event.params.data.id ) || $.markup);
     
     $('td.price').each(function(index, item){
@@ -13,23 +30,34 @@
     });
   };
 
-  $.fn.markupInit = function (ctrl){
-    var select = $(this).select2({
+  $.fn.markupInit = function (list){
+    $.markupSelector = $(this).select2({
       placeholder:  {
         id: 0,
         text: "Наценка"
       },
       allowClear:   true,
       minimumResultsForSearch: Infinity,
-      data:         markupData,
-      templateResult: function(state){
-        return $('<span class="markup-item">' + state.text + '<span class="glyphicon glyphicon-trash"></span></span>');
+      data:         list,
+      templateResult: function(state){        
+        if ( !state.id || (state.id=="null") ){
+          return state.text;
+        }
+        var body = $('<span></span>').addClass("markup-item");
+        var deleteButton = $('<span></span>').addClass("delete-button glyphicon glyphicon-trash");
+        body.text(state.text + ' ( ' + state.id + '% )');
+        body.append( deleteButton );        
+        return body;        
+      },
+      templateSelection: function(state){        
+        return state.text + ' (' + state.id + '%)';
       }
     });
-    console.log(select.select2());
 
-    select.val(null).trigger("change");
-    select.addOptions( [{text:"asdasd"}] );
+    var optionAdd = $('<option value="null">Добавить</option>');    
+    $(this).append(optionAdd);
+
+    $.markupSelector.val(null).trigger("change");
 
     $(this).on("select2:select", function (e) {
       $().markupUpdate(e);
@@ -133,7 +161,7 @@
           }
         });
 
-
+        $.markupSelector.val(null).trigger('change');
 
         var html = $("#popup-to-basket").html();
         

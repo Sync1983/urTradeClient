@@ -128,5 +128,4 @@ class ClientController extends Controller {
     return $this->render('change',['user'=>$user, 'message' => 'Пользователь удален']);    
   }
 
-
 }

@@ -4,17 +4,80 @@
 \app\assets\TableAsset::register($this);
 ?>
 
+<script>
+  var markupData = [
+    <?php  foreach (\app\models\MarkupModel::getList() as $item):?>
+        {
+          id: <?=$item['id']?>,
+          text: '<?=$item['text']?>'
+        },
+    <?php endforeach;?>
+  ];
+  
+  function onMClose(){    
+    var popup = $("div.markup-add");
+    var form = popup.find('form');
+    form.trigger('reset');
+    popup.hide(100);
+  }
+
+  function onMChange(item){
+    var ctrl = $(item);
+    var type = ctrl.attr('type');
+    var val  = ctrl.val();
+
+    ctrl.removeClass('error');
+
+    if( type === "text"){
+
+      if (String(val).length > 10 ){
+        ctrl.addClass('error');
+      }
+    } else if( type === "number" ){
+    
+      if( (val<0) || (val > 1000) ){
+        ctrl.addClass('error');
+      }
+    }    
+  }
+
+  function onMSave(){
+    var popup = $("div.markup-add");
+    var form  = popup.find('form');
+    var formData = form.serialize();    
+
+    $.ajax({
+      method: "GET",
+      url: '<?= yii\helpers\Url::to(['order/markup-add']);?>',
+      data: formData
+    }).done( function (data){
+      $('.markup-selector').html('');
+      $('.markup-selector').select2("destroy");
+      $('.markup-selector').markupInit(data);      
+    });
+  }
+
+  function markupDelete(value,name){
+    console.log("Delete",name,value);
+    $.ajax({
+      method: "GET",
+      url: '<?= yii\helpers\Url::to(['order/markup-delete']);?>',
+      data: {name:name,value:value}
+    }).done( function (data){
+      $('.markup-selector').html('');
+      $('.markup-selector').select2("destroy");
+      $('.markup-selector').markupInit(data);
+    });
+  }
+</script>
+
 <div class="panel panel-default panel-full-screen">
   <div class="panel-heading">
     <div class="panel-title title-bar"><span class="text">Выберите производителя артикула</span><b><?= $model->articul ?></b>
-      <script>
-        var markupData = [         
-          {id:"10",text:"asd"},
-          {id:"25",text:"asd1"},
-          {id:"50",text:"asd12"}
-        ];
-      </script>
-      <select class="markup-selector"></select>
+      <?php if( !\yii::$app->user->isGuest): ?>
+        <select class="markup-selector"></select>
+      <?php endif;?>
+
       <label for="analog" class="analog-label">Аналоги</label>
       <?= kartik\checkbox\CheckboxX::widget([            
             'id'    => 'analog',
@@ -41,7 +104,25 @@
         <?php endforeach; ?>
       </div>
     </div>
+      <?php if( !\yii::$app->user->isGuest): ?>
+      <div class="markup-add panel panel-warning">
+        <div class="panel-heading">
+          <h3 class="panel-title">Добавить вариант наценки</h3>
+        </div>
+        <div class="panel-body">
+          <form>
+            <label>Описание</label>               <input type="text"  name="name"                      onchange="onMChange(this);" onkeydown="onMChange(this);" />
+            <label>Значение наценки (в %)</label> <input type="number" name="value" min="0" max="1000" onchange="onMChange(this);" onkeydown="onMChange(this);" />
+          </form>
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-danger" onclick="onMClose();">Закрыть</button>
+          <button class="btn btn-info"   onclick="onMSave();" >Сохранить</button>
+        </div>
+      </div>
+      <?php endif;?>
     <div class="viewer">
+      
       &nbsp;
     </div>
   </div>
@@ -79,5 +160,7 @@ $script = "$('a[data-name]').initPartSelect('div.viewer',"
     . "}"
     . ",'$url');";
 $this->registerJs($script);
-$script = "$('.markup-selector').markupInit();";
-$this->registerJs($script);
+$script = "$('.markup-selector').markupInit(markupData);";
+if( !\yii::$app->user->isGuest){
+  $this->registerJs($script);
+}

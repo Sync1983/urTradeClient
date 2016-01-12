@@ -200,4 +200,30 @@ class OrderController extends Controller {
     return ['status'=>"OK"];
   }
 
+  public function actionMarkupAdd(){
+    $name   = \yii::$app->request->get('name','');
+    $value  = \yii::$app->request->get('value',0);
+
+    $markup = new \app\models\MarkupModel();
+    $markup->setAttribute('name', $name);
+    $markup->setAttribute('value', $value);
+    $markup->save();
+
+    \yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    return \app\models\MarkupModel::getList();
+  }
+
+  public function actionMarkupDelete(){
+    $name   = \yii::$app->request->get('name','');
+    $value  = \yii::$app->request->get('value',0);
+
+    $markup = \app\models\MarkupModel::findOne(['name'=>$name,'value'=>$value, 'uid' => \yii::$app->user->getId()]);
+    if ( $markup ){
+      $markup->delete();
+    }
+
+    \yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    return \app\models\MarkupModel::getList();
+  }
+
 }
