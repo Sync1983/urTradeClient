@@ -53,7 +53,8 @@
     }).done( function (data){
       $('.markup-selector').html('');
       $('.markup-selector').select2("destroy");
-      $('.markup-selector').markupInit(data);      
+      $('.markup-selector').markupInit(data);
+      onMClose();
     });
   }
 
