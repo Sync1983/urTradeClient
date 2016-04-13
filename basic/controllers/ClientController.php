@@ -82,6 +82,7 @@ class ClientController extends Controller {
     if( $model->load(\yii::$app->request->post()) && $model->validate() ){
       $user = new \app\models\WebUser();
       $user->setAttributes($model->getAttributes());
+      $user->upass = password_hash($user->upass, PASSWORD_BCRYPT);
       $user->save();
       return $this->redirect(['client/index']);
     }

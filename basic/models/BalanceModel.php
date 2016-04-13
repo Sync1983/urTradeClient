@@ -26,8 +26,8 @@ class BalanceModel extends ActiveRecord {
     ];
   }
   
-  public function getUserBalance(){
-    return self::getBalance( intval($this->getAttribute('uid')) );
+  public static function getUserBalance(){
+    return self::getBalance( intval(\yii::$app->user->getId()) );
   }
   //============================= Protected ====================================
   //============================= Private ======================================

@@ -4,7 +4,13 @@
 
 use kartik\grid\GridView;
 use yii\bootstrap\Html;
-
+$blnc = app\models\BalanceModel::getUserBalance();
+$crd  = $blnc['credit'];
+$full = $blnc['full'];
+?>
+<h4> Общий баланс: <u><?= round($full-$crd, 2)?> руб.</u> Кредит: <u><?= round($crd, 2)?> руб.</u></h4>
+<h5> Заказать еще можно на сумму: <u <?= ($full<0)?"style=\"color:red\"":""?>><?= round($full, 2)?> руб.</u></h5>
+<?php
 echo GridView::widget([
     'dataProvider'=> $balanceProvider,    
     'pjax'=>false,
